@@ -4,12 +4,12 @@
     using System.Collections.Generic;
     using System.Reflection;
 
+   
     // Step 1: Define the custom attribute
     [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
     sealed class ReportFieldAttribute : Attribute
     {
         public string DisplayName { get; }
-
         public ReportFieldAttribute(string displayName)
         {
             DisplayName = displayName;
@@ -30,7 +30,7 @@
 
         [ReportField("Email Address")]
         public string Email { get; set; }
-
+        [ReportField("Age")]
         public int Age { get; set; } // Not included in the report
     }
 
@@ -45,7 +45,7 @@
             // Print header
             foreach (var property in properties)
             {
-                var attribute = (ReportFieldAttribute)property.GetCustomAttribute(typeof(ReportFieldAttribute));
+                var attribute = property.GetCustomAttribute(typeof(ReportFieldAttribute)) as ReportFieldAttribute;
                 if (attribute != null)
                 {
                     Console.Write($"{attribute.DisplayName}\t");
@@ -58,7 +58,7 @@
             {
                 foreach (var property in properties)
                 {
-                    var attribute = (ReportFieldAttribute)property.GetCustomAttribute(typeof(ReportFieldAttribute));
+                    var attribute = property.GetCustomAttribute(typeof(ReportFieldAttribute)) as ReportFieldAttribute;
                     if (attribute != null)
                     {
                         Console.Write($"{property.GetValue(item)}\t");
